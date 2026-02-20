@@ -1,5 +1,12 @@
 import assert from "assert";
-//Printing Odd or even numbers-Question number 5
+
+/**
+ * Prints the first n odd or even numbers.
+ * @param {number} n - The number of elements needed.
+ * @param {string} evenOrOdd -Indicates whether we need even or odd numbers .
+ * @returns {string} The function returns a string that contains first n odd or even numbers.
+ */
+
 function printNumbers(n: number, evenOrOdd: string) {
     if (n <= 0) return "";
 
@@ -19,4 +26,4 @@ assert.strictEqual(printNumbers(5, "even"), "2, 4, 6, 8, 10");
 assert.strictEqual(printNumbers(1, "odd"), "1");
 assert.strictEqual(printNumbers(0, "even"), "");
 
-console.log("Printed numbers properply");
+
