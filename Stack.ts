@@ -1,56 +1,45 @@
-import { LinkedList } from "./LinkedList";
+// Implement a Stack class implementation:
+
+import { LinkedList } from "./LinkedList.js";
 
 /**
- * Interface representing a generic stack.
+ * A generic Stack implementation.
+ * Uses a LinkedList as the underlying data structure
+ * to maintain the items pushed into it.
  */
-export interface Stack<T> {
-  readonly __items: LinkedList<T>;
-  push(item: T): T;
-  pop(): T;
-  top(): T | null;
-}
-
-/**
- * A stack implementation using LinkedList as the underlying storage.
- */
-export class StackImpl<T> implements Stack<T> {
-  readonly __items: LinkedList<T>;
+export class Stack<T> {
+  #items: LinkedList<T>;
   constructor() {
-    this.__items = new LinkedList<T>();
+    this.#items = new LinkedList<T>();
   }
 
   /**
-   * Pushes an item onto the top of the stack.
-   * @param item - The value to push
-   * @returns The pushed value
+   * Push adds an item to the top of the stack.
+   * @param item - The item to push.
+   * @returns The pushed item.
    */
   push(item: T): T {
-    this.__items.addAtHead(item);
-    return item;
+    return this.#items.addAtHead(item);
   }
 
   /**
-   * Pops the top item off the stack.
-   * @returns The popped value
-   * @throws Error if the stack is empty
+   * Pop removes and returns the top item of the stack.
+   * @returns The removed item.
+   * @throws Error if the stack is empty.
    */
   pop(): T {
-    const removed = this.__items.removeFromHead();
-    if (removed === null) {
-      throw new Error("Stack underflow: Cannot pop from empty stack");
+    const value = this.#items.removeFromHead();
+    if (value === null) {
+      throw new Error("Stack is empty");
     }
-    return removed;
+    return value;
   }
 
   /**
-   * Returns the top item without removing it.
-   * @returns The top value, or null if the stack is empty
+   * Returns the item at the top of the stack,
+   * or null if the stack is empty.
    */
   top(): T | null {
-    const value = this.__items.removeFromHead();
-    if (value === null) return null;
-
-    this.__items.addAtHead(value);
-    return value;
+    return this.#items.itemAtHead();
   }
 }
