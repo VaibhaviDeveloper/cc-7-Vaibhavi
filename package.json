@@ -1,22 +1,27 @@
 {
   "name": "cc-7-vaibhavi",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "type": "module",
   "scripts": {
-    "test": "vitest"
+    "test": "vitest",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "module",
   "devDependencies": {
-    "@types/node": "^25.2.3",
+    "@types/node": "^25.3.0",
+    "@vitest/coverage-v8": "^4.0.18",
     "typescript": "^5.9.3",
     "vitest": "^4.0.18"
+<<<<<<< HEAD
   },
   "dependencies": {
     "assert": "^2.1.0",
     "grapheme-splitter": "^1.0.4"
+=======
+>>>>>>> 0ff8aa9 (Made necessary changes as suggested)
   }
 }
