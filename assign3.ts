@@ -1,4 +1,4 @@
-import assert from "node:assert";
+const assert = require("assert");
 /**
  * Filters out lines that contain the digit '4' from a multiline string of purchases,
  * then adds 10 to the quantity of each remaining item (skipping the header).
@@ -24,10 +24,9 @@ const transformedLine=linesWithoutFour.map((line,index)=>{
         }
         return `${item} ${numQuantity}`;
 });
-const expected1 = [
-  "items qty",
-  "mango 60",
-  "onion 41",
-  "water 20"
-];
-assert.deepStrictEqual(transformedLine, expected1);
+const finalOutput = transformedLine.join("\n");
+const expectedOutput = `items qty
+mango 60
+onion 41
+water 20`;
+assert.deepStrictEqual(finalOutput, expectedOutput);
