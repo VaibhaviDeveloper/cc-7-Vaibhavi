@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { LinkedList } from "./LinkedList.js";
+import { LinkedList } from "./LinkedList";
 
 describe("LinkedList", () => {
   it("should start empty", () => {
