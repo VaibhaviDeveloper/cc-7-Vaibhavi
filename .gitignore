@@ -1,6 +1,13 @@
+# Node.js dependencies
 node_modules/
+coverage/
+# TypeScript build output
+dist/
 *.js
 *.js.map
-dist/
-build/
-coverage/
+
+# VSCode settings
+.vscode/
+
+# Other system files
+.DS_Store

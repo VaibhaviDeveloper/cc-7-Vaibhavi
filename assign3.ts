@@ -1,4 +1,4 @@
-const assert = require("assert");
+import assert from "assert";
 /**
  * Filters out lines that contain the digit '4' from a multiline string of purchases,
  * then adds 10 to the quantity of each remaining item (skipping the header).
