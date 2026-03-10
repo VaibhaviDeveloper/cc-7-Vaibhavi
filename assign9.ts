@@ -17,7 +17,7 @@ const foods = [
 function foodsWithoutIngredient(arr: typeof foods, ingredient: string): string[] {
   return arr
     .filter(foodObj => {
-      const [foodName, ingredients] = Object.entries(foodObj)[0];
+      const [_foodName, ingredients] = Object.entries(foodObj)[0];
       return !ingredients.includes(ingredient);
     })
     .map(foodObj => Object.keys(foodObj)[0]);

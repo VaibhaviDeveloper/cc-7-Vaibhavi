@@ -1,51 +1,43 @@
 import assert from "assert";
 
 /**
- * Generates an array containing lowercase alphabets from a to z.
- *
- * @returns Array of alphabet characters
+ * Generate array of alphabets from a-z.
+ * @returns array of alphabets
  */
-function generateAlphabets(): string[] {
-  return Array.from({ length: 26 }, (_, i) =>
-    String.fromCharCode(97 + i)
+const generateAlphabets = (): string[] => {
+  const ALPHABET_START = "a".charCodeAt(0);
+  const ALPHABET_COUNT = 26;
+
+  return Array.from({ length: ALPHABET_COUNT }, (_, i) =>
+    String.fromCharCode(ALPHABET_START + i),
   );
-}
+};
 
 /**
- * Groups alphabets into vowels and consonants.
- *
- * @param alphabets - Array of alphabet characters
- * @returns Object containing vowels and consonants arrays
+ * Group alphabets into vowels and consonants.
+ * @param letters array of alphabets
+ * @returns object with vowels and consonants arrays
  */
-function groupVowelsAndConsonants(alphabets: string[]): {
-  vowels: string[];
-  consonants: string[];
-} {
-  const vowelsSet = new Set(["a", "e", "i", "o", "u"]);
+const groupLetters = (letters: string[]) => {
+  const VOWELS = ["a", "e", "i", "o", "u"];
 
-  return alphabets.reduce(
-    (acc, char) => {
-      if (vowelsSet.has(char)) {
-        acc.vowels.push(char);
-      } else {
-        acc.consonants.push(char);
-      }
+  return letters.reduce(
+    (acc, letter) => {
+      if (VOWELS.includes(letter)) acc.vowels.push(letter);
+      else acc.consonants.push(letter);
+
       return acc;
     },
-    { vowels: [], consonants: [] } as {
-      vowels: string[];
-      consonants: string[];
-    }
+    { vowels: [] as string[], consonants: [] as string[] },
   );
-}
+};
 
-const alphabetsTest = generateAlphabets();
+const alphabets = generateAlphabets();
 
-assert.strictEqual(alphabetsTest.length, 26);
+assert.strictEqual(alphabets.length, 26);
 
-const groupedTest = groupVowelsAndConsonants(alphabetsTest);
+const grouped = groupLetters(alphabets);
 
-assert.deepStrictEqual(groupedTest.vowels, ["a", "e", "i", "o", "u"]);
-
-assert(groupedTest.consonants.includes("b"));
-assert(groupedTest.consonants.includes("z"));
+assert.deepStrictEqual(grouped.vowels, ["a", "e", "i", "o", "u"]);
+assert(grouped.consonants.includes("b"));
+assert(grouped.consonants.includes("z"));

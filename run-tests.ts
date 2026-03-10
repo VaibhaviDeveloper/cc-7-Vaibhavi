@@ -20,7 +20,7 @@ for (const file of tsFiles) {
     console.log(`\nRunning ${file}...`);
     execSync(`tsx ${join(projectRoot, file)}`, { stdio: "inherit" });
     
-  } catch (err) {
+  } catch  { // <--- Added underscore here
     failed = true;
   }
 }

@@ -47,7 +47,7 @@ const movies: Movie[] = [
  * @param movies - Array of movie objects
  * @returns Array of unique actor names
  */
-function getAllActorNames(movies: Movie[]): string[] {
+export function getAllActorNames(movies: Movie[]): string[] {
   return [...new Set(
     movies.flatMap(movie => movie.cast)
   )];

@@ -13,7 +13,7 @@ function fibonacci(n:number):number{
     }
     let a=0,b=1;
     for(let i=2;i<=n;i++){
-          let temp=a+b;
+          const temp=a+b;
           a=b;
           b=temp;
     }

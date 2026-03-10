@@ -1,5 +1,4 @@
-// Implement a LinkedList class implementation:
-
+// LinkedList.ts
 export type ListNode<T> = {
   data: T;
   next: ListNode<T> | null;
@@ -29,23 +28,26 @@ export class LinkedList<T> implements LinkedListInterface<T> {
 
     if (!this.#head) {
       this.#head = this.#tail = newNode;
-      return t;
+    } else {
+      // Use ! because if head exists, tail must exist in a valid linked list
+      this.#tail!.next = newNode;
+      this.#tail = newNode;
     }
 
-    this.#tail!.next = newNode;
-    this.#tail = newNode;
     return t;
   }
 
   removeFromEnd(): T | null {
     if (!this.#head) return null;
 
+    // Case: Only one node in the list
     if (this.#head === this.#tail) {
       const value = this.#head.data;
       this.#head = this.#tail = null;
       return value;
     }
 
+    // Traverse to find the second-to-last node
     let current = this.#head;
     while (current.next !== this.#tail) {
       current = current.next!;
@@ -75,6 +77,7 @@ export class LinkedList<T> implements LinkedListInterface<T> {
     const value = this.#head.data;
     this.#head = this.#head.next;
 
+    // If list becomes empty, reset tail
     if (!this.#head) {
       this.#tail = null;
     }

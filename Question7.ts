@@ -14,7 +14,7 @@ import assert from "assert";
     let num=numInDecimal;
     let binary="";
     while(num>0){
-        let remainder = num%2;
+        const remainder = num%2;
         binary=binary+remainder;
         num=Math.floor(num/2);
     }

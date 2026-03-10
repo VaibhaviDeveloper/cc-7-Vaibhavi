@@ -10,7 +10,7 @@ import assert from "assert";
 function printNumbers(n: number, evenOrOdd: string) {
     if (n <= 0) return "";
 
-    let nums: number[] = [];
+    const nums: number[] = [];
     let start = evenOrOdd === "even" ? 2 : 1;
 
     for (let i = 0; i < n; i++) {

@@ -1,243 +1,158 @@
 import assert from "assert";
 
-/**
- * Represents the nutritional values of a food item.
- */
-type Nutritions = {
+type Nutrition = {
   protein?: number;
   carbs?: number;
   sugar?: number;
   vitamins?: number;
 };
 
-/**
- * Represents a fruit or nut with health benefits and nutrition values.
- */
-type Food = {
+type Item = {
   name: string;
   type: "fruit" | "nut";
   treats: string[];
-  nutritions: Nutritions;
+  nutritions: Nutrition;
 };
 
-const foods: Food[] = [
+const items: Item[] = [
   {
     name: "Banana",
     type: "fruit",
     treats: ["constipation", "vitamin deficiency", "skin issues", "sleep problems"],
-    nutritions: { protein: 8, carbs: 40, sugar: 30, vitamins: 45 }
+    nutritions: { protein: 8, carbs: 40, sugar: 30, vitamins: 45 },
   },
   {
     name: "Badam",
     type: "nut",
     treats: ["bp", "protein deficiency", "skin issues", "sugar"],
-    nutritions: { protein: 18, carbs: 20, sugar: 20, vitamins: 65 }
+    nutritions: { protein: 18, carbs: 20, sugar: 20, vitamins: 65 },
   },
   {
     name: "Cashew",
     type: "nut",
     treats: ["bp", "protein deficiency", "skin issues", "bone issues"],
-    nutritions: { protein: 22, carbs: 22, vitamins: 60 }
+    nutritions: { protein: 22, carbs: 22, vitamins: 60 },
   },
   {
     name: "Wallnut",
     type: "nut",
     treats: ["bp", "protein deficiency", "skin issues", "bone issues"],
-    nutritions: { protein: 33, carbs: 26, vitamins: 64 }
+    nutritions: { protein: 33, carbs: 26, vitamins: 64 },
   },
   {
     name: "Apple",
     type: "fruit",
     treats: ["heart problems", "skin issues", "bone issues", "migraine"],
-    nutritions: { protein: 22, carbs: 22, vitamins: 60 }
-  }
+    nutritions: { protein: 22, carbs: 22, vitamins: 60 },
+  },
 ];
 
-/**
- * Generates an object where each nutrition key maps to the food
- * that has the highest value for that nutrition.
- * If multiple foods have the same value, the first one encountered is chosen.
- *
- * @param foods - Array of food items
- * @returns Object mapping nutrition name to food name
- */
-function getHighestNutritionFood(foods: Food[]): Record<string, string> {
-  const result: Record<string, { name: string; value: number }> = {};
+/** Returns the item name with the highest value for each nutrition type */
+const highestByNutrition = (items: Item[]) => {
+  const allKeys = Array.from(new Set(items.flatMap(i => Object.keys(i.nutritions)))) as (keyof Nutrition)[];
+  return allKeys.reduce<Record<string, string>>((acc, key) => {
+    const maxItem = items.reduce((max, item) => {
+      const current = item.nutritions[key] ?? -Infinity;
+      const maxValue = max.nutritions[key] ?? -Infinity;
+      return current > maxValue ? item : max;
+    }, items[0]);
+    acc[key] = maxItem.name;
+    return acc;
+  }, {});
+};
 
-  foods.forEach(food => {
-    Object.entries(food.nutritions).forEach(([nutrition, value]) => {
-      if (!result[nutrition] || value > result[nutrition].value) {
-        result[nutrition] = { name: food.name, value };
-      }
-    });
-  });
+/** Returns all unique nutrition types */
+const uniqueNutritions = (items: Item[]) => Array.from(new Set(items.flatMap(i => Object.keys(i.nutritions))));
 
-  return Object.fromEntries(
-    Object.entries(result).map(([k, v]) => [k, v.name])
-  );
-}
+/** Returns all unique treats */
+const uniqueTreats = (items: Item[]) => Array.from(new Set(items.flatMap(i => i.treats)));
 
-assert.strictEqual(getHighestNutritionFood(foods).protein, "Wallnut");
+/** Returns common treats for nuts */
+const commonNutTreats = (items: Item[]) => {
+  const nuts = items.filter(i => i.type === "nut");
+  return nuts.reduce((acc, n) => acc.filter(t => n.treats.includes(t)), nuts[0].treats);
+};
 
-/**
- * Extracts all unique nutrition types across all foods.
- * @param foods - Array of food items
- * @returns Array of unique nutrition keys
- */
-function getUniqueNutritions(foods: Food[]): string[] {
-  return [...new Set(
-    foods.flatMap(food => Object.keys(food.nutritions))
-  )];
-}
+/** Adds totalNutritions */
+const addTotalNutritions = (items: Item[]) =>
+  items.map(i => ({ ...i, totalNutritions: Object.values(i.nutritions).reduce((a, b) => a + b, 0) }));
 
-assert(getUniqueNutritions(foods).includes("protein"));
+/** Total nutrition across all items */
+const totalNutritionValue = (items: Item[]) =>
+  items.reduce((sum, i) => sum + Object.values(i.nutritions).reduce((a, b) => a + b, 0), 0);
 
-/**
- * Finds health conditions that are treated by every nut.
- * @param foods - Array of food items
- * @returns Array of health conditions common to all nuts
- */
-function getCommonNutConditions(foods: Food[]): string[] {
-  const nuts = foods.filter(f => f.type === "nut");
+/** Items treating bone issues */
+const boneIssueItems = (items: Item[]) => items.filter(i => i.treats.includes("bone issues")).map(i => i.name);
 
-  return nuts[0].treats.filter(condition =>
-    nuts.every(nut => nut.treats.includes(condition))
-  );
-}
+/** Item with maximum number of nutrition types */
+const maxNutritionTypes = (items: Item[]) =>
+  items.reduce((max, i) => (Object.keys(i.nutritions).length > Object.keys(max.nutritions).length ? i : max), items[0]);
 
-assert(getCommonNutConditions(foods).includes("bp"));
+/** Items treating migraine with vitamins >= 60 */
+const migraineVitaminItems = (items: Item[]) =>
+  items.filter(i => i.treats.includes("migraine") && (i.nutritions.vitamins ?? 0) >= 60).map(i => i.name);
 
-/**
- * Adds a new property `totalNutritions` to each food object.
- * The value represents the sum of all nutrition values for that food.
- *
- * @param foods - Array of food items
- * @returns New array with totalNutritions property added
- */
-function addTotalNutritions(foods: Food[]) {
-  return foods.map(food => ({
-    ...food,
-    totalNutritions: Object.values(food.nutritions)
-      .reduce((sum, value) => sum + value, 0)
-  }));
-}
+/** Item with lowest carbs */
+const lowestCarbs = (items: Item[]) =>
+  items.filter(i => i.nutritions.carbs !== undefined).reduce((min, i) => (i.nutritions.carbs! < min.nutritions.carbs! ? i : min));
 
-const foodsWithTotals = addTotalNutritions(foods);
-assert(foodsWithTotals[0].totalNutritions > 0);
+/** Protein from nuts treating sugar */
+const proteinFromAllowedNuts = (items: Item[]) =>
+  items.filter(i => i.type === "nut" && i.treats.includes("sugar")).reduce((sum, i) => sum + (i.nutritions.protein ?? 0), 0);
 
-/**
- * Calculates the sum of all nutrition values across all foods.
- *
- * @param foods - Array of food items
- * @returns Total nutrition value
- */
-function getTotalNutritionValue(foods: Food[]): number {
-  return foods.reduce((total, food) => {
-    return total + Object.values(food.nutritions)
-      .reduce((sum, val) => sum + val, 0);
-  }, 0);
-}
+/** Vitamins intake from fruit without sugar + any nut */
+const vitaminIntake = (items: Item[]) => {
+  const fruit = items.find(i => i.type === "fruit" && !i.nutritions.sugar);
+  const nut = items.find(i => i.type === "nut");
+  return (fruit?.nutritions.vitamins ?? 0) + (nut?.nutritions.vitamins ?? 0);
+};
 
-assert(getTotalNutritionValue(foods) > 0);
+// highestByNutrition test
+const expectedHighest: Record<string, string> = {};
+Object.keys(items[0].nutritions).forEach(k => {
+  expectedHighest[k] = items.reduce((max, item) => ((item.nutritions[k as keyof Nutrition] ?? -Infinity) > (max.nutritions[k as keyof Nutrition] ?? -Infinity) ? item : max), items[0]).name;
+});
+assert.deepStrictEqual(highestByNutrition(items), expectedHighest);
 
-/**
- * Finds foods that treat bone-related issues.
- *
- * @param foods - Array of food items
- * @returns Array of food names
- */
-function getFoodsForBoneIssues(foods: Food[]): string[] {
-  return foods
-    .filter(food => food.treats.includes("bone issues"))
-    .map(food => food.name);
-}
+// uniqueNutritions
+assert.deepStrictEqual(uniqueNutritions(items).sort(), Array.from(new Set(items.flatMap(i => Object.keys(i.nutritions)))).sort());
 
-assert(getFoodsForBoneIssues(foods).includes("Apple"));
+// uniqueTreats
+assert.deepStrictEqual(uniqueTreats(items).sort(), Array.from(new Set(items.flatMap(i => i.treats))).sort());
 
-/**
- * Determines which food has the highest number
- * of different nutrition types.
- *
- * @param foods - Array of food items
- * @returns Name of the food
- */
-function getFoodWithMaxNutritionTypes(foods: Food[]): string {
-  return foods.reduce((max, food) =>
-    Object.keys(food.nutritions).length >
-    Object.keys(max.nutritions).length
-      ? food
-      : max
-  ).name;
-}
+// commonNutTreats
+const nuts = items.filter(i => i.type === "nut");
+const expectedCommonNutTreats = nuts.reduce((acc, n) => acc.filter(t => n.treats.includes(t)), nuts[0].treats);
+assert.deepStrictEqual(commonNutTreats(items), expectedCommonNutTreats);
 
-assert.strictEqual(getFoodWithMaxNutritionTypes(foods), "Banana");
+// totalNutritions
+const totals = addTotalNutritions(items).map(i => i.totalNutritions);
+assert.deepStrictEqual(totals, items.map(i => Object.values(i.nutritions).reduce((a, b) => a + b, 0)));
 
-/**
- * Finds foods that treat migraine and contain
- * vitamins greater than or equal to 60.
- *
- * @param foods - Array of food items
- * @returns Array of food names
- */
-function getMigraineVitaminFoods(foods: Food[]): string[] {
-  return foods
-    .filter(food =>
-      food.treats.includes("migraine") &&
-      (food.nutritions.vitamins ?? 0) >= 60
-    )
-    .map(food => food.name);
-}
+// totalNutritionValue
+assert.strictEqual(totalNutritionValue(items), items.reduce((sum, i) => sum + Object.values(i.nutritions).reduce((a, b) => a + b, 0), 0));
 
-assert(getMigraineVitaminFoods(foods).includes("Apple"));
+// boneIssueItems
+const expectedBone = items.filter(i => i.treats.includes("bone issues")).map(i => i.name);
+assert.deepStrictEqual(boneIssueItems(items).sort(), expectedBone.sort());
 
-/**
- * Determines the food item that has the lowest carb value.
- * Foods without a carb value are ignored.
- *
- * @param foods - Array of food items
- * @returns Name of the food with lowest carbs
- */
-function getLowestCarbsFood(foods: Food[]): string {
-  const foodsWithCarbs = foods.filter(f => f.nutritions.carbs !== undefined);
+// maxNutritionTypes
+const expectedMax = items.reduce((max, i) => (Object.keys(i.nutritions).length > Object.keys(max.nutritions).length ? i : max), items[0]);
+assert.strictEqual(maxNutritionTypes(items).name, expectedMax.name);
 
-  return foodsWithCarbs.reduce((min, food) =>
-    (food.nutritions.carbs! < min.nutritions.carbs!) ? food : min
-  ).name;
-}
+// migraineVitaminItems
+const expectedMigraine = items.filter(i => i.treats.includes("migraine") && (i.nutritions.vitamins ?? 0) >= 60).map(i => i.name);
+assert.deepStrictEqual(migraineVitaminItems(items).sort(), expectedMigraine.sort());
 
-assert.strictEqual(getLowestCarbsFood(foods), "Badam");
+// lowestCarbs
+const expectedLowest = items.filter(i => i.nutritions.carbs !== undefined).reduce((min, i) => (i.nutritions.carbs! < min.nutritions.carbs! ? i : min));
+assert.strictEqual(lowestCarbs(items).name, expectedLowest.name);
 
-/**
- * Calculates total protein intake from nuts that treat sugar issues.
- * Nuts that do not treat sugar issues are excluded.
- *
- * @param foods - Array of food items
- * @returns Total protein intake
- */
-function getProteinFromAllowedNuts(foods: Food[]): number {
-  return foods
-    .filter(food => food.type === "nut" && food.treats.includes("sugar"))
-    .reduce((total, food) => total + (food.nutritions.protein ?? 0), 0);
-}
+// proteinFromAllowedNuts
+const expectedProtein = items.filter(i => i.type === "nut" && i.treats.includes("sugar")).reduce((sum, i) => sum + (i.nutritions.protein ?? 0), 0);
+assert.strictEqual(proteinFromAllowedNuts(items), expectedProtein);
 
-assert.strictEqual(getProteinFromAllowedNuts(foods), 18);
-
-/**
- * Calculates the total vitamin intake when eating
- * all nuts and only fruits that do NOT contain sugar.
- *
- * @param foods - Array of food items
- * @returns Total vitamin intake
- */
-function getVitaminIntake(foods: Food[]): number {
-  const nuts = foods.filter(food => food.type === "nut");
-
-  const allowedFruits = foods.filter(
-    food => food.type === "fruit" && !("sugar" in food.nutritions)
-  );
-
-  return [...nuts, ...allowedFruits]
-    .reduce((sum, food) => sum + (food.nutritions.vitamins ?? 0), 0);
-}
-
-assert.strictEqual(getVitaminIntake(foods), 249);
+// vitaminIntake
+const fruitWithoutSugar = items.find(i => i.type === "fruit" && !i.nutritions.sugar);
+const anyNut = items.find(i => i.type === "nut");
+assert.strictEqual(vitaminIntake(items), (fruitWithoutSugar?.nutritions.vitamins ?? 0) + (anyNut?.nutritions.vitamins ?? 0));
