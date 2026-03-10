@@ -50,7 +50,7 @@ function blueGreenAlternateHeartPattern(lines: number): string {
   let result = "";
 
   for (let i = 1; i <= lines; i++) {
-    let row: string[] = [];
+    const row: string[] = [];
 
     for (let j = 0; j < i; j++) {
       
@@ -85,7 +85,7 @@ function boundedHeartPattern(lines: number): string {
   if (lines <= 0) return "";
   let result = "";
   for (let i = 1; i <= lines; i++) {
-    let row: string[] = [];
+    const row: string[] = [];
 
     for (let j = 1; j <= i; j++) {
       
