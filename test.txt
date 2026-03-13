@@ -1,0 +1,5 @@
+Hello, this is a test file!
+It has multiple lines.
+You can use it to test your getContents function.
+Line 4: Node.js is awesome!
+Line 5: End of file.

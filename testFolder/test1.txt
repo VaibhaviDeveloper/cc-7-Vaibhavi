@@ -1,0 +1,5 @@
+This is test1.txt file.
+It is used to test your Node.js functions.
+Line 3: This file has some sample text.
+Line 4: Testing getContents function.
+Line 5: End of test1.txt.

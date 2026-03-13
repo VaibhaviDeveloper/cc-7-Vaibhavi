@@ -1,0 +1,5 @@
+Hello from test2.txt!
+This file contains different content.
+Line 3: Another example line.
+Line 4: Just for testing purposes.
+Line 5: End of test2.txt.
