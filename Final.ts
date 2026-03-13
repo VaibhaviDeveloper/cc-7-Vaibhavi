@@ -1,4 +1,4 @@
-import assert from "assert";
+import assert from 'assert';
 
 /**
  * Generates an array containing the squares of the first `n` positive integers.Each element at index `i` (0-based) will be `(i + 1)²`.If `n` is 0 or negative, the function returns an empty array.
@@ -20,7 +20,7 @@ assert.deepStrictEqual(generateFirstSquares(6), [1, 4, 9, 16, 25, 36]);
 
 /**
  * Converts a day name string to its corresponding day index.
- * @param {string} dayName - The name of the day (e.g., "Mon", "fri"). 
+ * @param {string} dayName - The name of the day (e.g., "Mon", "fri").
  * @returns {number} The index of the day (0–6) or -1 if invalid.
  */
 
@@ -37,7 +37,7 @@ function getDayOfWeek(dayName: string): number {
   };
   return map[day] ?? -1;
 }
-assert.strictEqual(getDayOfWeek("sun"), 0);
-assert.strictEqual(getDayOfWeek("Mon"), 1);
-assert.strictEqual(getDayOfWeek("fri"), 5);
-assert.strictEqual(getDayOfWeek("xyz"), -1);
+assert.strictEqual(getDayOfWeek('sun'), 0);
+assert.strictEqual(getDayOfWeek('Mon'), 1);
+assert.strictEqual(getDayOfWeek('fri'), 5);
+assert.strictEqual(getDayOfWeek('xyz'), -1);

@@ -1,4 +1,4 @@
-import assert from "assert";
+import assert from 'assert';
 
 /**
  * Represents a movie record.
@@ -14,30 +14,30 @@ type Movie = {
  */
 const movies: Movie[] = [
   {
-    title: "The Lego Batman Movie",
+    title: 'The Lego Batman Movie',
     year: 2017,
-    cast: ["Will Arnett", "Michael Cera", "Rosario Dawson"]
+    cast: ['Will Arnett', 'Michael Cera', 'Rosario Dawson'],
   },
   {
-    title: "Fifty Shades Darker",
+    title: 'Fifty Shades Darker',
     year: 2017,
-    cast: ["Dakota Johnson", "Jamie Dornan"]
+    cast: ['Dakota Johnson', 'Jamie Dornan'],
   },
   {
-    title: "John Wick: Chapter 2",
+    title: 'John Wick: Chapter 2',
     year: 2017,
-    cast: ["Keanu Reeves", "Common"]
+    cast: ['Keanu Reeves', 'Common'],
   },
   {
-    title: "Avengers: Infinity War",
+    title: 'Avengers: Infinity War',
     year: 2018,
-    cast: ["Robert Downey Jr.", "Chris Evans", "Scarlett Johansson"]
+    cast: ['Robert Downey Jr.', 'Chris Evans', 'Scarlett Johansson'],
   },
   {
-    title: "Black Panther",
+    title: 'Black Panther',
     year: 2018,
-    cast: ["Chadwick Boseman", "Michael B. Jordan"]
-  }
+    cast: ['Chadwick Boseman', 'Michael B. Jordan'],
+  },
 ];
 
 /**
@@ -48,9 +48,7 @@ const movies: Movie[] = [
  * @returns Array of unique actor names
  */
 export function getAllActorNames(movies: Movie[]): string[] {
-  return [...new Set(
-    movies.flatMap(movie => movie.cast)
-  )];
+  return [...new Set(movies.flatMap((movie) => movie.cast))];
 }
 
 /**
@@ -61,24 +59,27 @@ export function getAllActorNames(movies: Movie[]): string[] {
  * @returns Object where keys are years and values are arrays of movie titles
  */
 function getMoviesByYear(movies: Movie[]): Record<string, string[]> {
-  return movies.reduce((acc, movie) => {
-    const yearKey = String(movie.year);
+  return movies.reduce(
+    (acc, movie) => {
+      const yearKey = String(movie.year);
 
-    if (!acc[yearKey]) {
-      acc[yearKey] = [];
-    }
+      if (!acc[yearKey]) {
+        acc[yearKey] = [];
+      }
 
-    if (acc[yearKey].length < 3) {
-      acc[yearKey].push(movie.title);
-    }
+      if (acc[yearKey].length < 3) {
+        acc[yearKey].push(movie.title);
+      }
 
-    return acc;
-  }, {} as Record<string, string[]>);
+      return acc;
+    },
+    {} as Record<string, string[]>
+  );
 }
 
 const grouped = getMoviesByYear(movies);
 
-assert.strictEqual(grouped["2017"].length, 3);
-assert(grouped["2017"].includes("John Wick: Chapter 2"));
+assert.strictEqual(grouped['2017'].length, 3);
+assert(grouped['2017'].includes('John Wick: Chapter 2'));
 
-assert.strictEqual(grouped["2018"].length, 2);
+assert.strictEqual(grouped['2018'].length, 2);

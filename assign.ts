@@ -1,4 +1,4 @@
-import assert from "node:assert";
+import assert from 'node:assert';
 
 /**
  * Returns a function that checks if a number
@@ -8,15 +8,15 @@ import assert from "node:assert";
  * @returns {(num: number) => boolean} Function that validates the number against the cutoff.
  */
 
-function createCutOff(cutOffValue:number):(num:number)=>boolean{
-   return function(num:number){
-    return num<=cutOffValue;
-   }
+function createCutOff(cutOffValue: number): (num: number) => boolean {
+  return function (num: number) {
+    return num <= cutOffValue;
+  };
 }
-const cutOff100 = createCutOff(100)
-assert.equal(cutOff100(89), true)
-assert.equal(cutOff100(189), false)
-assert.equal(cutOff100(100), true);   
+const cutOff100 = createCutOff(100);
+assert.equal(cutOff100(89), true);
+assert.equal(cutOff100(189), false);
+assert.equal(cutOff100(100), true);
 assert.equal(cutOff100(101), false);
 const cutOff0 = createCutOff(0);
 assert.equal(cutOff0(0), true);

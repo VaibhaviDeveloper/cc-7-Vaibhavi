@@ -1,4 +1,4 @@
-import assert from "assert";
+import assert from 'assert';
 
 /**
  * Generates an array containing the first n natural numbers.
@@ -39,22 +39,22 @@ function groupOddEven(numbers: number[]): { odd: number[]; even: number[] } {
 function sumOddEven(grouped: { odd: number[]; even: number[] }) {
   return {
     odd: grouped.odd.reduce((sum, n) => sum + n, 0),
-    even: grouped.even.reduce((sum, n) => sum + n, 0)
+    even: grouped.even.reduce((sum, n) => sum + n, 0),
   };
 }
 
-assert.deepStrictEqual(generateNaturalNumbers(5), [1,2,3,4,5]);
+assert.deepStrictEqual(generateNaturalNumbers(5), [1, 2, 3, 4, 5]);
 
-const groupedTest = groupOddEven([1,2,3,4]);
+const groupedTest = groupOddEven([1, 2, 3, 4]);
 
 assert.deepStrictEqual(groupedTest, {
-  odd: [1,3],
-  even: [2,4]
+  odd: [1, 3],
+  even: [2, 4],
 });
 
 const summedTest = sumOddEven(groupedTest);
 
 assert.deepStrictEqual(summedTest, {
   odd: 4,
-  even: 6
+  even: 6,
 });

@@ -1,4 +1,4 @@
-import assert from "node:assert";
+import assert from 'node:assert';
 
 /**
  * Filters an array of strings, removing any string
@@ -9,12 +9,12 @@ import assert from "node:assert";
  */
 
 function filterStrings(arr: string[]): string[] {
-  return arr.filter(item => !item.includes('u') && !item.includes('g'));
+  return arr.filter((item) => !item.includes('u') && !item.includes('g'));
 }
 
 const items = ['browl', 'faaast', 'energy', 'stand', 'eat', 'lunch'];
 const filteredItems = filterStrings(items);
-const expectedItems = ["browl", "faaast", "stand", "eat"];
+const expectedItems = ['browl', 'faaast', 'stand', 'eat'];
 assert.deepStrictEqual(filteredItems, expectedItems);
 
 /**
@@ -25,7 +25,7 @@ assert.deepStrictEqual(filteredItems, expectedItems);
  */
 
 function transformNumbers(arr: number[]): number[] {
-  return arr.map(num => num + 10).filter(num => num % 4 === 0);
+  return arr.map((num) => num + 10).filter((num) => num % 4 === 0);
 }
 const numbers = [34, 45, 2, 53, 84, 542, 31, 23];
 const transformed = transformNumbers(numbers);

@@ -1,6 +1,5 @@
-name: Run TypeScript Asserts
+name: CI Checks
 
-# Trigger workflow on any push and all pull requests
 on:
   push:
   pull_request:
@@ -10,25 +9,26 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'npm'
 
-      
       - name: Install dependencies
         run: npm ci
 
-      
       - name: TypeScript type check
-        run: tsc --noEmit
+        run: npx tsc --noEmit
 
-      
-      - name: Run assert-based tests
+      - name: Run ESLint
+        run: npx eslint .
+
+      - name: Check Prettier formatting
+        run: npx prettier . --check
+
+      - name: Run tests
         run: npm test

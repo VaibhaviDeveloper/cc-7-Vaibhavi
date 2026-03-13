@@ -1,4 +1,4 @@
-import assert from "assert";
+import assert from 'assert';
 
 /**
  * Applies a transformation function to each element of the array
@@ -12,10 +12,7 @@ import assert from "assert";
  * @returns New array with transformed values
  */
 
-const map = <T, U>(
-  array: T[],
-  transform: (item: T) => U
-): U[] => {
+const map = <T, U>(array: T[], transform: (item: T) => U): U[] => {
   return array.reduce<U[]>((acc, item) => {
     acc.push(transform(item));
     return acc;
@@ -33,10 +30,7 @@ const map = <T, U>(
  * @returns New array containing elements that satisfy the predicate
  */
 
-const filter = <T>(
-  array: T[],
-  predicate: (item: T) => boolean
-): T[] => {
+const filter = <T>(array: T[], predicate: (item: T) => boolean): T[] => {
   return array.reduce<T[]>((acc, item) => {
     if (predicate(item)) {
       acc.push(item);
@@ -46,21 +40,21 @@ const filter = <T>(
 };
 
 assert.deepStrictEqual(
-  map([1,2,3], n => n * 2),
-  [2,4,6]
+  map([1, 2, 3], (n) => n * 2),
+  [2, 4, 6]
 );
 
 assert.deepStrictEqual(
-  map(["a","b"], s => s.toUpperCase()),
-  ["A","B"]
+  map(['a', 'b'], (s) => s.toUpperCase()),
+  ['A', 'B']
 );
 
 assert.deepStrictEqual(
-  filter([1,2,3,4], n => n % 2 === 0),
-  [2,4]
+  filter([1, 2, 3, 4], (n) => n % 2 === 0),
+  [2, 4]
 );
 
 assert.deepStrictEqual(
-  filter(["apple","banana","kiwi"], s => s.length > 4),
-  ["apple","banana"]
+  filter(['apple', 'banana', 'kiwi'], (s) => s.length > 4),
+  ['apple', 'banana']
 );

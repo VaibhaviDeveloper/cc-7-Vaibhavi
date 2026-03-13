@@ -1,0 +1,5 @@
+Welcome to test3.txt
+This is the third test file.
+Line 3: You can add anything here.
+Line 4: Node.js file system testing.
+Line 5: End of test3.txt.
