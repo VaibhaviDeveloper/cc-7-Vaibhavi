@@ -1,4 +1,4 @@
-import assert from "node:assert";
+import assert from 'node:assert';
 
 const foods = [
   { idli: ['rice', 'urad', 'oil', 'cashew', 'water'] },
@@ -16,13 +16,13 @@ const foods = [
 
 function foodsWithoutIngredient(arr: typeof foods, ingredient: string): string[] {
   return arr
-    .filter(foodObj => {
+    .filter((foodObj) => {
       const [_foodName, ingredients] = Object.entries(foodObj)[0];
       return !ingredients.includes(ingredient);
     })
-    .map(foodObj => Object.keys(foodObj)[0]);
+    .map((foodObj) => Object.keys(foodObj)[0]);
 }
-const noSugarFoods = foodsWithoutIngredient(foods, "sugar");
+const noSugarFoods = foodsWithoutIngredient(foods, 'sugar');
 
 /**
  * Returns food names that contain all specified ingredients.
@@ -32,13 +32,13 @@ const noSugarFoods = foodsWithoutIngredient(foods, "sugar");
  */
 function foodsWithAllIngredients(arr: typeof foods, ingredientsList: string[]): string[] {
   return arr
-    .filter(foodObj => {
+    .filter((foodObj) => {
       const [_, ingredients] = Object.entries(foodObj)[0];
-      return ingredientsList.every(ing => ingredients.includes(ing));
+      return ingredientsList.every((ing) => ingredients.includes(ing));
     })
-    .map(foodObj => Object.keys(foodObj)[0]);
+    .map((foodObj) => Object.keys(foodObj)[0]);
 }
-const chiliOilFoods = foodsWithAllIngredients(foods, ["chiili", "oil"]);
+const chiliOilFoods = foodsWithAllIngredients(foods, ['chiili', 'oil']);
 
 /**
  * Marks food items as 'safe' or 'unsafe' based on presence of an ingredient.
@@ -46,20 +46,23 @@ const chiliOilFoods = foodsWithAllIngredients(foods, ["chiili", "oil"]);
  * @param {string} unsafeIngredient - Ingredient that makes food unsafe.
  * @returns {Array<Record<string, "safe" | "unsafe">>} Array of objects with food name and safety.
  */
-function markFoodSafety(arr: typeof foods, unsafeIngredient: string): Array<Record<string, "safe" | "unsafe">> {
-  return arr.map(foodObj => {
+function markFoodSafety(
+  arr: typeof foods,
+  unsafeIngredient: string
+): Array<Record<string, 'safe' | 'unsafe'>> {
+  return arr.map((foodObj) => {
     const [foodName, ingredients] = Object.entries(foodObj)[0];
-    return { [foodName]: ingredients.includes(unsafeIngredient) ? "unsafe" : "safe" };
+    return { [foodName]: ingredients.includes(unsafeIngredient) ? 'unsafe' : 'safe' };
   });
 }
-const foodSafety = markFoodSafety(foods, "sugar");
+const foodSafety = markFoodSafety(foods, 'sugar');
 
-assert.deepStrictEqual(noSugarFoods, ["idli", "paneer masala"]);
-assert.deepStrictEqual(chiliOilFoods, ["pizza"]);
+assert.deepStrictEqual(noSugarFoods, ['idli', 'paneer masala']);
+assert.deepStrictEqual(chiliOilFoods, ['pizza']);
 const expectedSafety = [
-  { idli: "safe" },
-  { chapathi: "unsafe" },
-  { pizza: "unsafe" },
-  { "paneer masala": "safe" }
+  { idli: 'safe' },
+  { chapathi: 'unsafe' },
+  { pizza: 'unsafe' },
+  { 'paneer masala': 'safe' },
 ];
 assert.deepStrictEqual(foodSafety, expectedSafety);

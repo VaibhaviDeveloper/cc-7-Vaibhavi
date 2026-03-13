@@ -1,8 +1,8 @@
-import { describe, it, expect } from "vitest";
-import { Stack } from "./Stack.js";
+import { describe, it, expect } from 'vitest';
+import { Stack } from './Stack.js';
 
-describe("Stack Implementation", () => {
-  it("should push items onto the stack", () => {
+describe('Stack Implementation', () => {
+  it('should push items onto the stack', () => {
     const stack = new Stack<number>();
 
     stack.push(10);
@@ -11,7 +11,7 @@ describe("Stack Implementation", () => {
     expect(stack.top()).toBe(20);
   });
 
-  it("should pop items in LIFO order", () => {
+  it('should pop items in LIFO order', () => {
     const stack = new Stack<number>();
 
     stack.push(1);
@@ -23,26 +23,26 @@ describe("Stack Implementation", () => {
     expect(stack.pop()).toBe(1);
   });
 
-  it("should return null when checking top on empty stack", () => {
+  it('should return null when checking top on empty stack', () => {
     const stack = new Stack<number>();
 
     expect(stack.top()).toBeNull();
   });
 
-  it("should throw error when popping empty stack", () => {
+  it('should throw error when popping empty stack', () => {
     const stack = new Stack<number>();
 
-    expect(() => stack.pop()).toThrow("Stack is empty");
+    expect(() => stack.pop()).toThrow('Stack is empty');
   });
 
-  it("should work with strings", () => {
+  it('should work with strings', () => {
     const stack = new Stack<string>();
 
-    stack.push("a");
-    stack.push("b");
+    stack.push('a');
+    stack.push('b');
 
-    expect(stack.top()).toBe("b");
-    expect(stack.pop()).toBe("b");
-    expect(stack.pop()).toBe("a");
+    expect(stack.top()).toBe('b');
+    expect(stack.pop()).toBe('b');
+    expect(stack.pop()).toBe('a');
   });
 });

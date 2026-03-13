@@ -1,4 +1,4 @@
-import assert from "assert";
+import assert from 'assert';
 
 /**
  * Returns the second largest distinct number in the array
@@ -13,7 +13,7 @@ function findSecondLargest(arr: number[]): number | null {
   let largest = -Infinity;
   let secondLargest = -Infinity;
 
-  arr.forEach(num => {
+  arr.forEach((num) => {
     if (num > largest) {
       secondLargest = largest;
       largest = num;

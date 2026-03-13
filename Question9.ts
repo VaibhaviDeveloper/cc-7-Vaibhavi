@@ -1,5 +1,5 @@
-import assert from "assert";
-import GraphemeSplitter from "grapheme-splitter";
+import assert from 'assert';
+import GraphemeSplitter from 'grapheme-splitter';
 
 /**
  * Adds two numeric arrays element by element.If the arrays have different lengths, the shorter array is treated as if it were padded with zeros.
@@ -38,12 +38,12 @@ function lengthOfString(str: string): number {
   return splitter.countGraphemes(str);
 }
 
-assert.strictEqual(lengthOfString("one world"), 9);
-assert.strictEqual(lengthOfString(""), 0);
-assert.strictEqual(lengthOfString("a"), 1);
-assert.strictEqual(lengthOfString("hello"), 5);
-assert.strictEqual(lengthOfString("👋"), 1);
-assert.strictEqual(lengthOfString("👩‍👩‍👧‍👦"), 1);
-assert.strictEqual(lengthOfString("🇮🇳"), 1);
-assert.strictEqual(lengthOfString("a👋b"), 3);
-assert.strictEqual(lengthOfString("😊😊😊"), 3);
+assert.strictEqual(lengthOfString('one world'), 9);
+assert.strictEqual(lengthOfString(''), 0);
+assert.strictEqual(lengthOfString('a'), 1);
+assert.strictEqual(lengthOfString('hello'), 5);
+assert.strictEqual(lengthOfString('👋'), 1);
+assert.strictEqual(lengthOfString('👩‍👩‍👧‍👦'), 1);
+assert.strictEqual(lengthOfString('🇮🇳'), 1);
+assert.strictEqual(lengthOfString('a👋b'), 3);
+assert.strictEqual(lengthOfString('😊😊😊'), 3);

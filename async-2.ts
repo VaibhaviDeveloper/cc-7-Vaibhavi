@@ -1,5 +1,5 @@
-import fs from "fs/promises";
-import path from "path";
+import fs from 'fs/promises';
+import path from 'path';
 
 /**
  * Determines the type of the entry at the given path.
@@ -8,14 +8,15 @@ import path from "path";
  */
 
 function getFileType(filePath: string): Promise<'FILE' | 'DIRECTORY' | 'OTHER'> {
-  return fs.stat(filePath)
+  return fs
+    .stat(filePath)
     .then((stats) => {
-      if (stats.isFile()) return "FILE";
-      if (stats.isDirectory()) return "DIRECTORY";
-      return "OTHER";
+      if (stats.isFile()) return 'FILE';
+      if (stats.isDirectory()) return 'DIRECTORY';
+      return 'OTHER';
     })
     .catch(() => {
-      throw new Error("file system error");
+      throw new Error('file system error');
     });
 }
 
@@ -26,18 +27,19 @@ function getFileType(filePath: string): Promise<'FILE' | 'DIRECTORY' | 'OTHER'> 
  */
 
 function getContents(filePath: string): Promise<string | string[]> {
-  return fs.stat(filePath)
+  return fs
+    .stat(filePath)
     .then<string | string[]>((stats) => {
       if (stats.isFile()) {
-        return fs.readFile(filePath, "utf8"); 
+        return fs.readFile(filePath, 'utf8');
       } else if (stats.isDirectory()) {
-        return fs.readdir(filePath);          
+        return fs.readdir(filePath);
       } else {
-        throw new Error("file system error");
+        throw new Error('file system error');
       }
     })
     .catch(() => {
-      throw new Error("file system error");
+      throw new Error('file system error');
     });
 }
 
@@ -48,14 +50,16 @@ function getContents(filePath: string): Promise<string | string[]> {
  */
 
 function getSize(filePath: string): Promise<number> {
-  return fs.stat(filePath)
+  return fs
+    .stat(filePath)
     .then((stats) => {
       if (stats.isFile()) {
         return stats.size;
       } else if (stats.isDirectory()) {
-        return fs.readdir(filePath)
+        return fs
+          .readdir(filePath)
           .then((files) => {
-            const promises = files.map(file => getSize(path.join(filePath, file)));
+            const promises = files.map((file) => getSize(path.join(filePath, file)));
             return Promise.all(promises);
           })
           .then((sizes) => {
@@ -66,7 +70,7 @@ function getSize(filePath: string): Promise<number> {
       }
     })
     .catch(() => {
-      throw new Error("file system error");
+      throw new Error('file system error');
     });
 }
 
@@ -76,21 +80,21 @@ const testPath = (p: string): Promise<void> => {
   console.log(`\n--- Testing: ${p} ---`);
   return getFileType(p)
     .then((type) => {
-      console.log("Type:", type);
+      console.log('Type:', type);
       return getContents(p);
     })
     .then((contents) => {
-      console.log("Contents:", contents);
+      console.log('Contents:', contents);
       return getSize(p);
     })
     .then((size) => {
-      console.log("Total Size:", size);
+      console.log('Total Size:', size);
     })
     .catch((err) => {
-      console.log("Error:", err.message);
+      console.log('Error:', err.message);
     });
 };
 
-testPath("./test.txt")
-  .then(() => testPath("./testFolder"))
-  .then(() => testPath("./noSuchFile"));
+testPath('./test.txt')
+  .then(() => testPath('./testFolder'))
+  .then(() => testPath('./noSuchFile'));

@@ -1,4 +1,4 @@
-import assert from "assert";
+import assert from 'assert';
 
 /**
  * Filters an array of strings to include only those
@@ -9,7 +9,7 @@ import assert from "assert";
  */
 
 function filterMangOrFy(arr: string[]): string[] {
-  return arr.filter(item => item.startsWith("mang") || item.endsWith("fy"));
+  return arr.filter((item) => item.startsWith('mang') || item.endsWith('fy'));
 }
 
 const items = ['mangalore', 'semangin', '2 lonely', 'verify', 'rectify', 'mangala', 'notifyy'];

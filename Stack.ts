@@ -1,6 +1,6 @@
 // Implement a Stack class implementation:
 
-import { LinkedList } from "./LinkedList.js";
+import { LinkedList } from './LinkedList.js';
 
 /**
  * A generic Stack implementation.
@@ -30,7 +30,7 @@ export class Stack<T> {
   pop(): T {
     const value = this.#items.removeFromHead();
     if (value === null) {
-      throw new Error("Stack is empty");
+      throw new Error('Stack is empty');
     }
     return value;
   }

@@ -1,5 +1,5 @@
-import fs from "fs/promises";
-import path from "path";
+import fs from 'fs/promises';
+import path from 'path';
 
 /**
  * Determines the type of the entry at the given path.
@@ -10,11 +10,12 @@ import path from "path";
 export async function getFileType(filePath: string): Promise<'FILE' | 'DIRECTORY' | 'OTHER'> {
   try {
     const stats = await fs.stat(filePath);
-    if (stats.isFile()) return "FILE";
-    if (stats.isDirectory()) return "DIRECTORY";
-    return "OTHER";
-  } catch (err) {
-    throw new Error("file system error");
+    if (stats.isFile()) return 'FILE';
+    if (stats.isDirectory()) return 'DIRECTORY';
+    return 'OTHER';
+  } catch {
+    // Removed 'err' to fix: 'err' is defined but never used
+    throw new Error('file system error');
   }
 }
 
@@ -28,14 +29,15 @@ export async function getContents(filePath: string): Promise<string | string[]> 
   try {
     const stats = await fs.stat(filePath);
     if (stats.isFile()) {
-      return await fs.readFile(filePath, "utf8");
+      return await fs.readFile(filePath, 'utf8');
     } else if (stats.isDirectory()) {
       return await fs.readdir(filePath);
     } else {
-      throw new Error("file system error");
+      throw new Error('file system error');
     }
-  } catch (err) {
-    throw new Error("file system error");
+  } catch {
+    // Removed 'err' to fix: 'err' is defined but never used
+    throw new Error('file system error');
   }
 }
 
@@ -53,13 +55,14 @@ export async function getSize(filePath: string): Promise<number> {
       return stats.size;
     } else if (stats.isDirectory()) {
       const files = await fs.readdir(filePath);
-      const promises = files.map(file => getSize(path.join(filePath, file)));
+      const promises = files.map((file) => getSize(path.join(filePath, file)));
       const sizes = await Promise.all(promises);
       return sizes.reduce((acc, curr) => acc + curr, 0);
     }
     return 0;
-  } catch (err) {
-    throw new Error("file system error");
+  } catch {
+    // Removed 'err' to fix: 'err' is defined but never used
+    throw new Error('file system error');
   }
 }
 
@@ -71,15 +74,20 @@ export async function testPath(p: string): Promise<void> {
   console.log(`\n--- Testing: ${p} ---`);
   try {
     const type = await getFileType(p);
-    console.log("Type:", type);
+    console.log('Type:', type);
 
     const contents = await getContents(p);
-    console.log("Contents:", contents);
+    console.log('Contents:', contents);
 
     const size = await getSize(p);
-    console.log("Total Size:", size);
-  } catch (err: any) {
-    console.log("Error:", err.message);
+    console.log('Total Size:', size);
+  } catch (err: unknown) {
+    // Changed 'any' to 'unknown' and added a type guard to fix: Unexpected any.
+    if (err instanceof Error) {
+      console.log('Error:', err.message);
+    } else {
+      console.log('Error:', String(err));
+    }
   }
 }
 
@@ -88,10 +96,10 @@ export async function testPath(p: string): Promise<void> {
  */
 
 export async function runTests() {
-  await testPath("./test.txt");
-  await testPath("./testFolder");
-  await testPath("./noSuchFile");
-  await testPath("./emptyFile.txt");
+  await testPath('./test.txt');
+  await testPath('./testFolder');
+  await testPath('./noSuchFile');
+  await testPath('./emptyFile.txt');
 }
 
 runTests();

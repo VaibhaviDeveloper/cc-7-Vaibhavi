@@ -1,4 +1,4 @@
-import assert from "assert";
+import assert from 'assert';
 
 /**
  * Extracts all emails from an array of strings.
@@ -9,14 +9,12 @@ import assert from "assert";
 
 const emailRegex = /[a-zA-Z][a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z]+/;
 const addresses = [
-  "34, brighten street, email: BS@sft.com",
-  "Behind hotel paragon, rode street, micHel@sun.it",
-  "ulef court, cown street, email:cown@street",
-  "CodeCraft"
+  '34, brighten street, email: BS@sft.com',
+  'Behind hotel paragon, rode street, micHel@sun.it',
+  'ulef court, cown street, email:cown@street',
+  'CodeCraft',
 ];
-const extractEmails = addresses.filter(str => emailRegex.test(str));
-const emails = extractEmails.map(str =>
-  str.match(emailRegex)![0].toLowerCase()
-);
+const extractEmails = addresses.filter((str) => emailRegex.test(str));
+const emails = extractEmails.map((str) => str.match(emailRegex)![0].toLowerCase());
 
-assert.deepStrictEqual(emails, ["bs@sft.com", "michel@sun.it"]);
+assert.deepStrictEqual(emails, ['bs@sft.com', 'michel@sun.it']);
