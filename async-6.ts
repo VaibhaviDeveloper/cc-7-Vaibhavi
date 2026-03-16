@@ -23,11 +23,9 @@ export interface User {
  * @param {number} delayTime - Optional delay in milliseconds before resolving. Default is 2000.
  * @returns {Promise<User[]>} - Promise resolving to array of users
  */
-
 export async function getUsers(delayTime = 2000): Promise<User[]> {
   const res = await fetch('https://jsonplaceholder.typicode.com/users');
   if (!res.ok) throw new Error('Failed to fetch users');
-  const users: User[] = await res.json();
   await delay(delayTime);
-  return users;
+  return res.json();
 }
