@@ -19,16 +19,25 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
+        working-directory: post-browser
         run: npm ci
 
+      - name: Install Playwright Browsers
+        working-directory: post-browser
+        run: npx playwright install --with-deps
+
       - name: TypeScript type check
+        working-directory: post-browser
         run: npx tsc --noEmit
 
       - name: Run ESLint
+        working-directory: post-browser
         run: npx eslint .
 
       - name: Check Prettier formatting
+        working-directory: post-browser
         run: npx prettier . --check
 
       - name: Run tests
+        working-directory: post-browser
         run: npm test

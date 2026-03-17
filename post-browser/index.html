@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Post Browser</title>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./src/style.css" />
+  </head>
+
+  <body>
+    <header class="main-header">
+      <h1><span class="brand-accent">Post</span> Browser</h1>
+    </header>
+
+    <main class="card">
+      <div class="post-meta" id="post-meta">Loading...</div>
+
+      <div id="post-container">
+        <h2 class="post-title" id="post-title"></h2>
+        <p class="post-body" id="post-body"></p>
+      </div>
+
+      <div class="action-buttons">
+        <button class="btn btn-refresh" id="refresh-btn">🔄 Refresh</button>
+
+        <button class="btn btn-comments" id="comments-btn">
+          View Comments
+        </button>
+      </div>
+
+      <div id="comments-section"></div>
+
+      <div class="divider"></div>
+
+      <nav class="navigation">
+        <button class="nav-btn" id="prev-btn">← Previous</button>
+        <button class="nav-btn" id="next-btn">Next →</button>
+      </nav>
+    </main>
+
+    <footer class="main-footer">© 2026 Post Browser</footer>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

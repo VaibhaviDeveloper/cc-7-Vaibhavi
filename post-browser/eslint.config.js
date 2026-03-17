@@ -24,25 +24,25 @@ export default [
     },
     plugins: {
       "@typescript-eslint": tsPlugin,
-      "prettier": prettierPlugin,
+      prettier: prettierPlugin,
     },
     rules: {
       // Essential for TypeScript projects in ESLint 9+
-      "no-undef": "off", 
-      
+      "no-undef": "off",
+      "no-unused-vars": "off",
       // Handle the underscore prefix for unused variables
       "@typescript-eslint/no-unused-vars": [
         "warn",
         {
-          "argsIgnorePattern": "^_",
-          "varsIgnorePattern": "^_",
-          "caughtErrorsIgnorePattern": "^_"
-        }
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+          caughtErrorsIgnorePattern: "^_",
+        },
       ],
-      
+
       "prettier/prettier": "error",
       "prefer-const": "error",
-      "no-var": "error"
+      "no-var": "error",
     },
   },
   // This turns off rules that conflict with Prettier
