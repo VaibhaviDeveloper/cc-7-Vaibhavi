@@ -6,19 +6,35 @@ import { CacheService } from "./services/CacheService";
 const api = new APIService();
 const cache = new CacheService();
 
-let currentPostId = 1;
+const urlParams = new URLSearchParams(window.location.search);
+const startId = parseInt(urlParams.get("id") || "1", 10);
+
+let currentPostId = isNaN(startId) ? 1 : Math.min(Math.max(startId, 1), 100);
+
 const totalPosts = 100;
 
-// Elements
-const titleEl = document.getElementById("post-title")!;
-const bodyEl = document.getElementById("post-body")!;
-const metaEl = document.getElementById("post-meta")!;
+function getElement<T extends HTMLElement>(id: string): T {
+  const el = document.getElementById(id);
 
-const nextBtn = document.getElementById("next-btn")!;
-const prevBtn = document.getElementById("prev-btn")!;
-const refreshBtn = document.getElementById("refresh-btn")!;
-const commentsBtn = document.getElementById("comments-btn")!;
-const commentsSection = document.getElementById("comments-section")!;
+  console.assert(!!el, `${id} not found`);
+
+  if (!el) {
+    throw new Error(`${id} not found`);
+  }
+
+  return el as T;
+}
+
+// Elements
+const titleEl = getElement<HTMLHeadingElement>("post-title");
+const bodyEl = getElement<HTMLParagraphElement>("post-body");
+const metaEl = getElement<HTMLDivElement>("post-meta");
+
+const nextBtn = getElement<HTMLButtonElement>("next-btn");
+const prevBtn = getElement<HTMLButtonElement>("prev-btn");
+const refreshBtn = getElement<HTMLButtonElement>("refresh-btn");
+const commentsBtn = getElement<HTMLButtonElement>("comments-btn");
+const commentsSection = getElement<HTMLDivElement>("comments-section");
 
 let commentsVisible = false;
 
@@ -98,15 +114,17 @@ refreshBtn.addEventListener("click", () => {
 
 // Toggle Comments
 commentsBtn.addEventListener("click", async () => {
-  if (commentsVisible) {
-    commentsSection.innerHTML = "";
-    commentsBtn.textContent = "View Comments";
-    commentsVisible = false;
-  } else {
+  const shouldShow = !commentsVisible;
+
+  if (shouldShow) {
     await loadComments(currentPostId);
     commentsBtn.textContent = "Hide Comments";
-    commentsVisible = true;
+  } else {
+    commentsSection.innerHTML = "";
+    commentsBtn.textContent = "View Comments";
   }
+
+  commentsVisible = shouldShow;
 });
 
 // Initial Load

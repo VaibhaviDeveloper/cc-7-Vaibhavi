@@ -39,13 +39,7 @@ test.describe("Post Browser App", () => {
   });
 
   test("next button is disabled on last post", async ({ page }) => {
-    await page.goto(APP_URL);
-
-    // Go to last post
-    for (let i = 1; i < 100; i++) {
-      await page.click("#next-btn");
-    }
-
+    await page.goto(`${APP_URL}?id=100`);
     await expect(page.locator("#post-meta")).toHaveText("Post #100 of 100");
     await expect(page.locator("#next-btn")).toBeDisabled();
   });

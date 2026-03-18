@@ -2,9 +2,8 @@ import { Comment } from "../services/APIService";
 
 export function renderComments(comments: Comment[]) {
   const container = document.getElementById("comments-section");
-
+  console.assert(!!container, "comments-section element not found");
   if (!container) return;
-
   // Create a simple list of comments
   container.innerHTML = `
     <div class="comments-container" style="margin-top: 2rem; border-top: 1px solid var(--border-soft); padding-top: 1.5rem;">
