@@ -1,0 +1,176 @@
+html {
+  font-size: 10px;
+  background: linear-gradient(135deg, #2b0a0a, #5a1a1a);
+  background-size: cover;
+}
+
+body,
+html {
+  margin: 0;
+  padding: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: #fff;
+}
+
+/* KEYS */
+.keys {
+  display: flex;
+  flex: 1;
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+}
+
+.key {
+  border: 2px solid #ffcc00;
+  border-radius: 12px;
+  margin: 10px;
+  font-size: 1.5rem;
+  padding: 12px 0.5rem;
+  transition: all 0.15s ease;
+  width: 100px;
+  text-align: center;
+  color: #fff;
+
+  background: rgba(255, 204, 0, 0.08);
+  backdrop-filter: blur(8px);
+  text-shadow: 0 0 5px black;
+}
+
+.playing {
+  transform: scale(1.15);
+  border-color: #ffcc00;
+  box-shadow: 0 0 20px #ffcc00;
+  background: rgba(255, 204, 0, 0.2);
+}
+
+kbd {
+  display: block;
+  font-size: 4rem;
+}
+
+.sound {
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1rem;
+  color: #ffcc00;
+}
+
+.controls {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px;
+  gap: 20px;
+}
+
+.record-controls,
+.playback-controls {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+button {
+  width: 160px;
+  height: 50px;
+  background: linear-gradient(135deg, #ffcc00, #ff9900);
+  color: #1a1a1a;
+
+  border: none;
+  border-radius: 40px;
+
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  transition: all 0.25s ease;
+  text-transform: uppercase;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(255, 204, 0, 0.5);
+}
+
+button:active {
+  transform: scale(0.95);
+}
+
+button:disabled {
+  background: #555;
+  color: #aaa;
+  cursor: not-allowed;
+}
+
+#record.is-recording {
+  background: linear-gradient(135deg, #ff4b2b, #ff0000);
+  color: white;
+  box-shadow: 0 0 25px rgba(255, 75, 43, 0.8);
+  animation: pulse-red 1.2s infinite;
+}
+
+@keyframes pulse-red {
+  0% { opacity: 1; }
+  50% { opacity: 0.6; }
+  100% { opacity: 1; }
+}
+
+#play {
+  position: relative;
+  overflow: hidden;
+}
+
+#play-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 100%;
+  width: 0%;
+
+  background: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0.4) 0%,
+    rgba(0, 0, 0, 0.6) 100%
+  );
+
+  z-index: 0;
+  transition: width 0.05s linear;
+}
+
+#play span {
+  position: relative;
+  z-index: 1;
+}
+
+#seek-bar {
+  width: 200px;
+  height: 6px;
+  border-radius: 999px;
+  appearance: none;
+  background: rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+}
+
+#seek-bar::-webkit-slider-thumb {
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #ffcc00;
+  border: 2px solid #000;
+}
+
+#seek-time {
+  font-size: 1.2rem;
+  color: #ffcc00;
+}
+
+button span.icon {
+  font-size: 18px;
+}
