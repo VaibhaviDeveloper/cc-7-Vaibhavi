@@ -12,16 +12,20 @@
       <!-- Recording Controls -->
       <div class="record-controls">
         <button id="record">Record</button>
-        <button id="pause">Pause</button>
-        <button id="resume">Resume</button>
+        <button id="pause-resume">⏸ Pause</button>
+        <button id="stop">⏹ Stop</button>
       </div>
 
       <!-- Playback Controls -->
       <div class="playback-controls">
-        <button id="play">
-          ▶ Play
-          <div id="play-progress"></div>
-        </button>
+        <div class="play-control-group">
+          <button id="play">
+            <span id="play-label">▶ Play</span>
+          </button>
+          <div class="progress-bar-container">
+            <div id="play-progress" class="progress-bar"></div>
+          </div>
+        </div>
         <input
           id="seek-bar"
           type="range"

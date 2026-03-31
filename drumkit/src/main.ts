@@ -41,9 +41,9 @@ function animateKey(keyCode: string) {
 // convert milliseconds to mm:ss format
 function formatTime(ms: number) {
   const seconds = Math.floor(ms / 1000);
-  const m = seconds % 60;
-  const s = Math.floor(seconds / 60);
-  return `${s}:${m.toString().padStart(2, '0')}`;
+  const m = Math.floor(seconds / 60);
+  const s = seconds % 60;
+  return `${m}:${s.toString().padStart(2, '0')}`;
 }
 
 // update playbar, slider, and time display
@@ -78,49 +78,68 @@ window.addEventListener('keydown', (e) => {
 
 // get button elements from html
 const recordBtn = document.getElementById('record') as HTMLButtonElement;
-const pauseBtn = document.getElementById('pause') as HTMLButtonElement;
-const resumeBtn = document.getElementById('resume') as HTMLButtonElement;
+const pauseResumeBtn = document.getElementById('pause-resume') as HTMLButtonElement;
+const stopBtn = document.getElementById('stop') as HTMLButtonElement;
 const playBtn = document.getElementById('play') as HTMLButtonElement;
 const clearBtn = document.getElementById('clear') as HTMLButtonElement;
 const playProgress = document.getElementById('play-progress')!;
+const playLabel = document.getElementById('play-label')!;
 const seekBar = document.getElementById('seek-bar') as HTMLInputElement;
 const seekTime = document.getElementById('seek-time') as HTMLDivElement;
 
-// record button: start/stop recording
+// record button: start recording
 recordBtn.addEventListener('click', () => {
   if (state.mode === 'normal') {
     dispatch({ type: 'START_RECORDING', payload: { startTime: Date.now() } });
-  } else if (state.mode === 'recording-progress' || state.mode === 'recording-paused') {
-    dispatch({ type: 'STOP_RECORDING' });
   }
 });
 
-// pause button: pause recording or playback
-pauseBtn.addEventListener('click', () => {
+// pause/resume button: toggle between pause and resume
+pauseResumeBtn.addEventListener('click', () => {
   if (state.mode === 'recording-progress') {
     dispatch({ type: 'ADD_BEAT', payload: { key: 'PAUSE', timestamp: Date.now() } });
     dispatch({ type: 'PAUSE_RECORDING', payload: { pauseTime: Date.now() } });
-  } else if (state.mode === 'playback-progress') {
-    player?.pause();
-    dispatch({ type: 'PAUSE_PLAYBACK' });
-  }
-});
-
-// resume button: continue recording or playback
-resumeBtn.addEventListener('click', () => {
-  if (state.mode === 'recording-paused') {
+  } else if (state.mode === 'recording-paused') {
     dispatch({
       type: 'CONTINUE_RECORDING',
       payload: { pauseDuration: Date.now() - (state.pauseStart ?? Date.now()) },
     });
+  } else if (state.mode === 'playback-progress') {
+    player?.pause();
+    dispatch({ type: 'PAUSE_PLAYBACK' });
   } else if (state.mode === 'playback-paused') {
     player?.play();
     dispatch({ type: 'CONTINUE_PLAYBACK' });
   }
 });
 
-// play button: start playback from current seek position
+// stop button: stop recording or playback
+stopBtn.addEventListener('click', () => {
+  if (state.mode === 'recording-progress' || state.mode === 'recording-paused') {
+    dispatch({ type: 'STOP_RECORDING' });
+  } else if (state.mode === 'playback-progress' || state.mode === 'playback-paused') {
+    player?.pause();
+    player = null;
+    dispatch({ type: 'STOP_PLAYBACK' });
+  }
+});
+
+// play button: start playback, or pause/resume if already playing
 playBtn.addEventListener('click', () => {
+  // pause during playback
+  if (state.mode === 'playback-progress') {
+    player?.pause();
+    dispatch({ type: 'PAUSE_PLAYBACK' });
+    return;
+  }
+
+  // resume after pause
+  if (state.mode === 'playback-paused') {
+    player?.play();
+    dispatch({ type: 'CONTINUE_PLAYBACK' });
+    return;
+  }
+
   if (state.mode !== 'normal' || !state.recording) return;
 
   dispatch({ type: 'START_PLAYBACK' });
@@ -176,10 +195,10 @@ clearBtn.addEventListener('click', () => {
 
 // update ui based on current state
 function render() {
-  // reset all buttons to default state
-  pauseBtn.style.display = 'none';
-  resumeBtn.style.display = 'none';
+  // Show all buttons always by default, using disabled state instead of visibility
   recordBtn.disabled = false;
+  pauseResumeBtn.disabled = false;
+  stopBtn.disabled = false;
   playBtn.disabled = false;
   clearBtn.disabled = false;
   seekBar.disabled = true;
@@ -188,6 +207,10 @@ function render() {
   switch (state.mode) {
     case 'normal':
       recordBtn.textContent = 'Record';
+      pauseResumeBtn.textContent = '⏸ Pause';
+      pauseResumeBtn.disabled = true;
+      stopBtn.disabled = true;
+      playLabel.textContent ='▶ Play';
       playBtn.disabled = !state.recording;
       clearBtn.disabled = !state.recording;
       seekBar.disabled = !state.recording;
@@ -198,31 +221,41 @@ function render() {
       break;
 
     case 'recording-progress':
-      recordBtn.textContent = '⏹ Stop';
-      pauseBtn.style.display = '';
+      recordBtn.disabled = true;
+      recordBtn.textContent = 'Record';
+      pauseResumeBtn.textContent = '⏸ Pause';
+      pauseResumeBtn.disabled = false;
+      stopBtn.disabled = false;
+      playLabel.textContent ='▶ Play';
       playBtn.disabled = true;
       clearBtn.disabled = true;
       break;
 
     case 'recording-paused':
-      recordBtn.textContent = '⏹ Stop';
-      resumeBtn.style.display = '';
+      recordBtn.disabled = true;
+      recordBtn.textContent = 'Record';
+      pauseResumeBtn.textContent = '▶ Resume';
+      pauseResumeBtn.disabled = false;
+      stopBtn.disabled = false;
+      playLabel.textContent ='▶ Play';
       playBtn.disabled = true;
       clearBtn.disabled = true;
       break;
 
     case 'playback-progress':
       recordBtn.disabled = true;
-      pauseBtn.style.display = '';
-      playBtn.disabled = true;
+      pauseResumeBtn.disabled = true;
+      stopBtn.disabled = true;
+      playLabel.textContent ='⏸ Pause';
       clearBtn.disabled = true;
       seekBar.disabled = false;
       break;
 
     case 'playback-paused':
       recordBtn.disabled = true;
-      resumeBtn.style.display = '';
-      playBtn.disabled = true;
+      pauseResumeBtn.disabled = true;
+      stopBtn.disabled = true;
+      playLabel.textContent ='▶ Resume';
       clearBtn.disabled = true;
       seekBar.disabled = false;
       break;
